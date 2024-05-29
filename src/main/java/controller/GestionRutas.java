@@ -1,0 +1,96 @@
+package controller;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import model.Ruta;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+/**
+ * Servlet implementation class GestionRutas
+ */
+@MultipartConfig
+public class GestionRutas extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+	// Decidir la ruta de almacenamiento de las fotos subidas.
+	private String pathFiles = "C:\\Users\\Usuario\\eclipse-workspace\\ProyectoMototravel\\src\\main\\webapp\\uploadedPhotos";
+	private File uploads = new File(pathFiles);
+
+    /**
+     * Default constructor. 
+     */
+    public GestionRutas() {
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * En request especificamos el 'name' puesto en HTML.
+	 * Para subir una foto el buffer (camino o ruta) es el siguiente: ruta - datos - nombreArchivo
+	 * En una foto se obtienen los datos del archivo del formulario, no la foto en sí.
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+		String titulo = request.getParameter("titulo");
+		String estilo = request.getParameter("estilo");
+		String descripcion = request.getParameter("descripcion");
+		String fecha = request.getParameter("fecha");
+		
+		//Subir una foto:
+		Part part = request.getPart("foto"); //datos binarios de la foto
+		
+		Path path = Paths.get(part.getSubmittedFileName()); //obtener la ruta/nombre del archivo
+		String fileName = path.getFileName().toString();
+		
+		InputStream input = part.getInputStream(); //buffer o camino
+		
+		File file = new File (uploads, fileName); //contenedor
+		
+		//Gestión de errores
+		try {
+			
+			Files.copy(input, file.toPath()); //copiado de los datos del archivo
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			
+			System.out.println("Error al copiar archivo");
+			PrintWriter respuesta = response.getWriter();
+			respuesta.print("<h4> Se ha producido un error, contacte con el administrador</h4>");
+		}
+		
+		//Objeto Ruta (elegir constructor correcto)
+		Ruta r1 = new Ruta(titulo, estilo, descripcion, fecha, fileName);
+		System.out.println(r1.toString());
+		
+		try {
+			r1.publicarRuta();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			System.out.println("Error en base de datos");
+		}
+		//inserción realizada		
+	}
+
+}
