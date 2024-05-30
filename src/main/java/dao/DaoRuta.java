@@ -2,7 +2,11 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import com.google.gson.Gson;
 
 import model.Ruta;
 
@@ -76,5 +80,64 @@ public class DaoRuta {
 		ps.close();
 		
 	}
+	
+	/**
+	 * Un método con prepareStatement, conectarse con el atributo 'con' que ya tenemos elaborado.
+	 * Ejecutar y guardar en un objeto de tipo ResultSet, ResultSet es el que utiliza mysql para almacenar esa colección.
+	 * Indicar que ejecute el 'ps', pero dado que se van a recibir datos, no enviar, el que se usará es executeQuery en vez de executeUpdate. 
+	 * 
+	 * Inicializar la colección. 
+	 * Se usarán las condicionales anidadas para nicializar el ArrayList 'res' si no lo está (es null), en caso contrario no es necesario.
+	 * 
+	 * En cada fila del ArrayList se instancia un objeto de tipo Ruta.
+	 * Se elige un constructor (de la clase Modelo) que contenga el id también.
+	 * @return
+	 * @throws SQLException 
+	 */
+	public ArrayList<Ruta> listarRutas() throws SQLException {
+		
+		String sql = "SELECT * FROM rutas";
+		PreparedStatement ps = con.prepareStatement(sql);
+		
+		ResultSet res = ps.executeQuery(); //lista
+		
+		ArrayList<Ruta> rutas = null;
 
+		while(res.next()) {
+			
+			if(rutas == null) {
+				rutas = new ArrayList<Ruta>();
+			}
+			rutas.add(new Ruta(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), res.getString(5), res.getString(6)));
+		}
+		
+		return rutas;
+	}
+	
+	/**
+	 * Vncular el proyecto mediante el Build Path el archivo gson (libreria gson), y a la carpeta de Apache.
+	 * Este método servirá para convertir todos los datos que obtiene a un archivo json.
+	 * 
+	 * Crear un objeto gson gracias a la librería que se ha añadido e importamos al Build Path.
+	 * 
+	 * Mediante este método toJson, se obtiene un String con todos los datos de la base de datos en formato JSON.
+	 * En dicho String json, incluir lo que devuelva el objeto gson, con el método toJson,
+	 * al cual se le da el método listarRutas, el cual es el que tiene todos los datos.
+	 * Retorna el archivo json. Ahora el modelo es capaz de conectarse y trabajar en JSON.
+	 * @return
+	 * @throws SQLException
+	 */
+	public String listarJson() throws SQLException {
+		
+		String json = "";
+		Gson gson = new Gson();
+		
+		json = gson.toJson(this.listarRutas());
+		
+		return json;
+	}
+
+	
 }
+
+

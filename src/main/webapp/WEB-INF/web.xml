@@ -19,4 +19,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>GestionUsuarios</display-name>
+    <servlet-name>GestionUsuarios</servlet-name>
+    <servlet-class>controller.GestionUsuarios</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GestionUsuarios</servlet-name>
+    <url-pattern>/GestionUsuarios</url-pattern>
+  </servlet-mapping>
 </web-app>

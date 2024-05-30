@@ -5,62 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mototravel</title>
     <link rel="stylesheet" href="listarRutas.css">
+
+	
 </head>
 <body>
     <header>
         <div class="container">
             <p class="logo">MotoTravel®</p>
             <nav>
-                <a href="#listaRutas">Lista de rutas</a>
-                <a href="#nuestros-servicios">Sigue explorando</a>
-                <a href="#caracteristicas">Formulario de contacto</a>
+                <a href="index.html">Inicio</a>
+                <a href="#listaRutas">Rutas publicadas</a>
+                <a href="#nuestros-servicios">Rutas recomendadas</a>
+                <a href="#rutasList">Sigue explorando</a>
             </nav>
         </div>
     </header>
-
+	
+	
     <section id="hero">
         <h1>Bienvenido rutero, <br>este es tu primer paso para adentrarte y explorar rutas y aventuras</h1>
     </section>
 
     <section id="listaRutas">
+		
         <div class="container">
-            <div id="listaRutas">
+            <div class="rutasDisponibles">
                 <h2> Rutas disponibles</h2>
+				<div id="listadoRutas"></div>
             </div>
         </div>
     </section>
 
     <section id="nuestros-servicios">
         <div class="container">
-            <h2>Sigue explorando</h2>
+            <h2>Rutas más populares que son obligatorias</h2>
             <div class="servicios">
                 <div class="carta">
-                    <h3>Eventos</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.  Ducimus  obcaecati repellat aut nam, possimus explicabo fugiat tenetur   corrupti   accusamus.</p>
+                    <h3>Ruta de la plata</h3>
+                    <p>No solo se trata de un itinerario cultural de primer orden, sino que además la Red de Cooperación de Ciudades en la Ruta de la Plata es una de las entidades que más claramente apuesta por los moteros. El trazado es la ruta perfecta: cerca de 1.000 kilómetros, desde Asturias hasta Andalucía, a través de cuatro comunidades autónomas y paisajes de ensueño.</p>
                     <button>+Info</button>
                 </div>
                 <div class="carta">
-                    <h3>Rutas</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, cumque! sequi praesentium aspernatur neque  corrupti amet sint in tempore autem!</p>
+                    <h3>Picos de Europa</h3>
+                    <p>España cuenta con 15 Parques Nacionales. De entre todos ellos, el más antiguo es el de Picos de Europa, que recientemente cumplía su centenario. Los escenarios imprescindibles: la ascensión a los Lagos de Covadonga, Cangas de Onís… no te pierdas los decorados montañosos más bellos de Asturias.</p>
                     <button>+Info</button>
                 </div>
                 <div class="carta">
-                    <h3>Viajes</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa accusamus, saepe perspiciatis id hic ad voluptate rem  earum!</p>
+                    <h3>Alpujarra</h3>
+                    <p> A la Alpujarra hay que ir por su incombustible historia. También por su naturaleza extasiante. Y por su deliciosa gastronomía. Y por su atmósfera bohemia y montaraz. Sí, por todo ello hay que sumergirse en esta franja de la Andalucía más bella. Pero, sobre todo, por sus gentes. Por la sonrisa de sus gentes. Una sonrisa que se extiende desde los pueblos orientales cobijados por el puerto de La Ragua (2.000 m) hasta el Valle de Lecrín.</p>
                     <button>+Info</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="caracteristicas">
+    <section id="rutasList">
         <div class="container">
-            <div class="img-container"></div>
-        <ul>
-            <li>&#x1f6f5 100% Online</li>
-            <li>&#x1f6f5 Guía durante toda la ruta</li>
-            <li>&#x1f6f5 Flexibilidad de horarios</li>
-            <li>&#x1f6f5 Soporte y asistencia</li>
+        <h3>Investiga esta lista de rutas que te recomendamos:</h3>
+        <input type="text" id="filterInput" placeholder="Filtrar rutas...">
+        <ul id="listRecommend">
+            <li>Ruta Vía de la Plata</li>
+            <li>Picos de Europa</li>
+            <li>Alpujarra</li>
+            <li>La nacional N-340</li>
+            <li>Transpirenaica</li>
+            <li>Murcia Campo de Montiel</li>
+            <li>Parque Nacional de Cabañeros</li>
+            <li>Alicante interior</li>
+            <li>Tajo Internacional</li>
+            <li>Hayedos y pueblos negros</li>
         </ul>
         </div>
     </section>
@@ -79,5 +92,7 @@
         </div>
     </footer>
 
+    <script src="listadoRutas.js"></script>
+    <script src="filtradoRutas.js"></script> <!--Implementación de DOM-->
 </body>
 </html>

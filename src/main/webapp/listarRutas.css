@@ -11,6 +11,45 @@ body{
     margin: 0;
 }
 
+#listaRutas .rutasDisponibles{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tablabonitacss{
+    width: 100%;
+    margin: auto;
+    border-collapse: separate;
+    text-align: center;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    border-spacing: 10px 5px;
+    border: 10px;
+}
+
+.tablabonitacss tr{
+    background-color: darkolivegreen;
+    color: #ffffff;
+    text-align: center;
+    font-weight: normal;
+}
+
+.tablabonitacss th{
+    background-color: darkgoldenrod;
+    padding: 12px 15px;
+    border: 1px solid dark;
+    text-align: center;
+}
+
+.tablabonitacss .td {
+    margin: 10%;
+}
+
+.tablabonitacss tr:hover {
+    background-color: cadetblue;
+}
+
 h1{ font-size: 3em;}
 h2{ font-size: 2.4em;}
 h3{ font-size: 1.5em;}
@@ -89,7 +128,7 @@ header button{
     text-align: center;
     flex-direction: column;
     height: 70vh;
-    background-image: url("/media/dibujoaventura.jpeg");
+    background-image: url("media/dibujoaventura.jpeg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
@@ -140,20 +179,20 @@ header button{
 
 .carta:nth-child(2){
     background-image: linear-gradient(0deg,rgba(0,0,0,0.5), rgba(0,0,0,0.5)),  
-    url("/media/fondoviajejpg.jpg");    
+    url("media/fondoviajejpg.jpg");    
 }
 
 .carta:nth-child(3){
     background-image: linear-gradient(0deg,rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-    url("/media/Viajeenmoto.jpg");
+    url("media/Viajeenmoto.jpg");
 }
 
-#caracteristicas .container{
+#rutasList .container{
     text-align: center;
     padding: 200px 12px;
 }
 
-#caracteristicas li{
+#rutasList li{
     margin: 15px 0px;
     font-weight: bold;
 }
@@ -250,18 +289,29 @@ footer .container {
         padding: 50px;
     }
 
-    #caracteristicas .container{
+    #rutasList .container{
         width: 50%;
-        max-width: 600px;
-        text-align: initial;
+        max-width: 800px;
+        text-align: center;
         padding-left: 30px;
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
 
-    #caracteristicas .ul{
-        margin-left: 100px;
+    #rutasList {
+        font-size: 1em;
+    }
+
+    #filterInput {
+        height: 30px;
+        background-color: aliceblue;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    #filterInput:hover{
+        background-color: whitesmoke;
     }
 
     #final h2{

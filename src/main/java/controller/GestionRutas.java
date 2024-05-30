@@ -15,6 +15,9 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
+
+import dao.DaoRuta;
 
 /**
  * Servlet implementation class GestionRutas
@@ -35,17 +38,40 @@ public class GestionRutas extends HttpServlet {
     }
 
 	/**
+	 * Recordar que request es la entrada y response la salida.
+	 * Cuando se reciba una llamada por Get, llame a la BD genere el json y lo devuelva.
+	 * Generar un objeto String con respuesta json que incluya lo que incluye el método DaoRuta, al cual llamaremos listarJson.
+	 * 
+	 * Crear un objeto Print Writer que va a servir para enviar datos.
+	 * Se usará Singelton siempre que se pueda.
+	 * De esta manera el cliente recibe los datos por web, los cuales recibirá JavaScript y porcesará.
+	 * 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		
+		try {
+			String respuestaJSON;
+			respuestaJSON = DaoRuta.getInstance().listarJson();
+			System.out.println(respuestaJSON);
+			
+			PrintWriter out = response.getWriter();
+			out.print(respuestaJSON);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} //Singelton	
+		
 	}
 
 	/**
 	 * En request especificamos el 'name' puesto en HTML.
 	 * Para subir una foto el buffer (camino o ruta) es el siguiente: ruta - datos - nombreArchivo
 	 * En una foto se obtienen los datos del archivo del formulario, no la foto en sí.
+	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

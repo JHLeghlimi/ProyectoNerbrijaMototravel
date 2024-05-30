@@ -1,5 +1,9 @@
 package model;
 
+import java.sql.SQLException;
+
+import dao.DaoUsuario;
+
 /**
  * Propiedades o atributos 'private' para cumplir el principio de encapsulamiento de POO.
  * Se van creando los constructores que se requieran.
@@ -56,11 +60,11 @@ public class Usuario {
 	}
 
 	
-	public int getId() {
+	public int getIduser() {
 		return iduser;
 	}
 
-	public void setId(int iduser) {
+	public void setIduser(int iduser) {
 		this.iduser = iduser;
 	}
 
@@ -105,6 +109,26 @@ public class Usuario {
 				+ permiso + "]";
 	}
 	
+	public void insertarUsuario() throws SQLException {
+		
+		DaoUsuario.getInstance().insertarUsuario(this);
+		
+	}
 	
 
+	
+	
+	
+	
 }
+
+
+
+
+
+
+
+
+
+
+

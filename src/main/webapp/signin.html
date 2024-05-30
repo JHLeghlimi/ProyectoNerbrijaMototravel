@@ -5,14 +5,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Signin Form</title>
-    <link rel="stylesheet" href="/signin.css" />
+    <link rel="stylesheet" href="signin.css" />
   </head>
 
   <body>
     
     <header>
       <section id="inicio">
-        <img src="/media/logomototravel.jpg" alt="logo-mototravel">
+        <img src="media/logomototravel.jpg" alt="logo-mototravel">
       </section>
     </header>
 
@@ -36,34 +36,30 @@
         <hr />
       </div>
 
-      <form action="" method="">
+      <form id="altaUsuario" name="altaUsuario" action="GestionUsuarios" method="post">
 
         <div class="section-inputs">
-          <label for="name">
-            <span>Nombre</span>
-            <input id="name" name="name" />
-          </label>
-          <label for="username">
-            <span>Username</span>
-            <input id="username" name="username" />
-          </label>
-          <label for="Email">
-            <span>Email</span>
-            <input id="Email" name="Email" />
-          </label>
-          <label for="Password">
-            <span>Password</span>
-            <input id="Password" type="password" name="Password" placeholder="6+ caracteres" />
-          </label>
+			
+			<input type="hidden" id="id" name="id">
+        	<label><span>Nombre</span><input id="nombre" name="nombre" /></label>
+        	<label><span>Username</span><input id="username" name="username" /></label>
+       		<label><span>Email</span><input id="email" name="email" /></label>
+        	<label><select name="permiso">
+            	<option value="0">...</option>
+            	<option value="1">Usuario registrado</option>
+            	<option value="9">Usuario administrador</option>
+          	</select></label>
 
           <label for="checkbox" class="checkbox-label">
-            <input type="checkbox" id="checkbox" />
-            <span>Acepto las condiciones y el aviso legal</span>
+            <input type="checkbox" id="checkbox" /><span>Acepto las condiciones y el aviso legal</span>
           </label>
-          <button type="submit" class="submit-btn">Crear cuenta</button>
+
+          <label><input type="button" onclick="validarFormulario()" value="Enviar"></label>
         </div>
 
       </form>
     </div>
+
+    <script src="altaUsuario.js"></script>
   </body>
 </html>
