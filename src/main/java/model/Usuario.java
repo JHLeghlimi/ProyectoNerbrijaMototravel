@@ -2,6 +2,8 @@ package model;
 
 import java.sql.SQLException;
 
+import com.google.gson.Gson;
+
 import dao.DaoUsuario;
 
 /**
@@ -109,10 +111,64 @@ public class Usuario {
 				+ permiso + "]";
 	}
 	
+	/**
+	 * Se hace uso del patrón Singelton.
+	 * @throws SQLException
+	 */
 	public void insertarUsuario() throws SQLException {
 		
 		DaoUsuario.getInstance().insertarUsuario(this);
 		
+		// DaoUsuario dao = new DaoUsuario ();
+		// dao.insertar(this);
+	}
+	
+	/**
+	 * Se hace uso del patrón Singelton.
+	 * @throws SQLException
+	 */
+	public void actualizarUsuario() throws SQLException {
+		
+		DaoUsuario.getInstance().actualizarUsuario(this);
+		
+	}
+	
+	public void borrarUsuario(int iduser) throws SQLException {
+		
+		DaoUsuario.getInstance().borrarUsuario(iduser);
+		
+	}
+	
+	/**
+	 * Generación  de un objeto auxiliar ('aux'), llamada al dao y guardado de dato en 'aux'.
+	 * @param iduser
+	 * @throws SQLException
+	 */
+	public void obtenerPorId(int iduser) throws SQLException {
+		
+		//Usuario aux = DaoUsuario.getInstance().obtenerPorId(iduser); //Singelton
+		DaoUsuario dao = new DaoUsuario ();
+		Usuario aux = dao.obtenerPorId(iduser);
+		
+		this.setIduser(aux.getIduser());
+		this.setNombre(aux.getNombre());
+		this.setUsername(aux.getUsername());
+		this.setEmail(aux.getEmail());
+		this.setPermiso(aux.getPermiso());
+		
+	}
+	
+	/**
+	 * Método que devuelva un String y devuelva tambien json.
+	 * @return
+	 */
+	public String dameJson() {
+		
+		String json = "";
+		Gson gson = new Gson();
+		json = gson.toJson(this);
+				
+		return json;
 	}
 	
 

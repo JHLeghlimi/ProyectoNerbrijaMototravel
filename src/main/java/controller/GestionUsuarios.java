@@ -29,29 +29,79 @@ public class GestionUsuarios extends HttpServlet {
     }
 
 	/**
+	 * Gestión de opciones con if else.
+	 * Uso de patrón Singelton.
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		try {
-			String respuestaJSON;
-			respuestaJSON = DaoUsuario.getInstance().listarJson();
-			System.out.println(respuestaJSON);
+		PrintWriter out = response.getWriter();
+		
+		int opcion = Integer.parseInt(request.getParameter("op")); //recuperar la opción
+		
+		if(opcion == 2) { //opción editar
 			
-			PrintWriter out = response.getWriter();
-			out.print(respuestaJSON);
+			int iduser = Integer.parseInt(request.getParameter("iduser"));
+			try {
+				Usuario u = new Usuario();
+				u.obtenerPorId(iduser);
+				out.print(u.dameJson());
+				System.out.println(u.dameJson());
+				//comprobaciones
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 	
+		}else if(opcion == 1) { //opción listar
+			
+			try {
+				DaoUsuario u = new DaoUsuario();
+				out.print(u.listarJson());
+				// response.sendRedirect("listarUsuarios.html");	
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			
+		}else if(opcion == 3) {	//opción borrar
+			
+			int iduser = Integer.parseInt(request.getParameter("iduser"));
+			try {
+				DaoUsuario u = new DaoUsuario();
+				u.borrarUsuario(iduser);
+				out.print(u.listarJson());
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}else if(opcion == 4) {
+		
+			int tipoUsuario = Integer.parseInt(request.getParameter("tipoUsuario"));	
+			try {
+				//DaoUsuario.getInstance().listarJson(tipoUsuario); //Singelton mal hecho
+				//out.print(tipoUsuario); //No me lista al seleccionar. Intentar luego.
+				DaoUsuario u = new DaoUsuario();
+				out.print(u.listarJson(tipoUsuario));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+
 	}
 
 	/**
 	 * getParameter siempre devuelve String, para obtener un número hay que parsear.
 	 * sendRedirect al final para que redirija a la web que se desee, para que el servlet no quede "muerto".
 	 * En este caso el usuario seráredirigido a la lista de usuarios al insertar.
+	 * 
+	 * Respetando la arquitectura de software y las reglas de POO.
 	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -62,28 +112,29 @@ public class GestionUsuarios extends HttpServlet {
 		String username = request.getParameter("username");
 		String email = request.getParameter("email");
 		int permiso = Integer.parseInt(request.getParameter("permiso"));
-		//String iduser = request.getParameter("iduser");
+		String iduser = request.getParameter("iduser");
 				
 		Usuario u = new Usuario(nombre, username, email, permiso);
 		System.out.println(u.toString());
 		
-		try {
-			DaoUsuario.getInstance().insertarUsuario(u);
-			/*
+		try {	
 			if (iduser == "") {
-				DaoUsuario.getInstance().insertarUsuario(u);
+				DaoUsuario.getInstance().insertarUsuario(u); //Singelton
+				//DaoUsuario dau = new DaoUsuario();
+				//dao.insertar(u);
+				
 			}else {
-				//int idInt = Integer.parseInt(iduser);
-				//u.setIduser(idInt);
-				//u.actualizar();
-				//u.actualizar(Integer.parseInt(iduser)); //abreviatura
-			}*/
+				int iduserInt = Integer.parseInt(iduser);
+				u.setIduser(iduserInt);
+				u.actualizarUsuario();
+				//u.actualizarUsuario(Integer.parseInt(iduser)); //abreviatura
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
 		
-		//response.sendRedirect("listarUsuarios.html");	
+		response.sendRedirect("listarUsuarios.html");	
 		
 	}
 

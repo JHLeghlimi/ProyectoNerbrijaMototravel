@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Listado usuarios</title>
-    <link rel="stylesheet" href="listarUsuarios.css" />
+    <link rel="stylesheet" href="css/listarUsuarios.css" />
   </head>
           
   <body>
@@ -20,13 +20,22 @@
       <div class="container">
         <h3>Listado usuarios registrados</h3>
         <div class="separator">
-            <span>Acceso retringido a usuarios administradores</span><hr/>
+            <span>Acceso restringido a administradores</span><hr/>
         </div>
+        <form name="tipoUsuarioForm" method="GET" action="GestionUsuarios?op=1&op=4"></form>
+
+			<select name="tipoUsuario" onchange="busquedaPorTipo(this.value)">
+				<option value="0">...</option>
+				<option value="1">Usuarios</option>
+				<option value="9">Administradores</option>
+			</select>
+
 
         <div id="listarUsuarios"></div>
 
       </div>
   </section>
-    <script src="listadoUsuarios.js"></script>
+  
+    <script src="js/listadoUsuarios.js"></script>
   </body>
 </html>

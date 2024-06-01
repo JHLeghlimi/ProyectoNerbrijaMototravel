@@ -105,7 +105,7 @@ public class GestionRutas extends HttpServlet {
 			respuesta.print("<h4> Se ha producido un error, contacte con el administrador</h4>");
 		}
 		
-		//Objeto Ruta (elegir constructor correcto)
+		//Objeto Ruta con el constructor deseado
 		Ruta r1 = new Ruta(titulo, estilo, descripcion, fecha, fileName);
 		System.out.println(r1.toString());
 		
@@ -115,8 +115,8 @@ public class GestionRutas extends HttpServlet {
 			// TODO: handle exception
 			e.printStackTrace();
 			System.out.println("Error en base de datos");
-		}
-		//inserción realizada		
+		}	
+		response.sendRedirect("listadoRutas.html");
 	}
 
 }

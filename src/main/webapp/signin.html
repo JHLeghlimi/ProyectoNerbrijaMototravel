@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Signin Form</title>
-    <link rel="stylesheet" href="signin.css" />
+    <link rel="stylesheet" href="css/signin.css" />
   </head>
 
   <body>
@@ -36,14 +36,14 @@
         <hr />
       </div>
 
-      <form id="altaUsuario" name="altaUsuario" action="GestionUsuarios" method="post">
+      <form id="signin" name="signin" action="GestionUsuarios" method="post">
 
         <div class="section-inputs">
 			
-			<input type="hidden" id="id" name="id">
-        	<label><span>Nombre</span><input id="nombre" name="nombre" /></label>
-        	<label><span>Username</span><input id="username" name="username" /></label>
-       		<label><span>Email</span><input id="email" name="email" /></label>
+			<input type="hidden" id="iduser" name="iduser">
+        	<label><span>Nombre</span><input id="nombre" type="text" name="nombre" /></label>
+        	<label><span>Username</span><input id="username" type="text" name="username" /></label>
+       		<label><span>Email</span><input id="email" type="text" name="email" /></label>
         	<label><select name="permiso">
             	<option value="0">...</option>
             	<option value="1">Usuario registrado</option>
@@ -54,12 +54,12 @@
             <input type="checkbox" id="checkbox" /><span>Acepto las condiciones y el aviso legal</span>
           </label>
 
-          <label><input type="button" onclick="validarFormulario()" value="Enviar"></label>
+          <label><input type="button" id="btn" value="Enviar"></label>
         </div>
 
       </form>
     </div>
 
-    <script src="altaUsuario.js"></script>
+    <script src="js/signin.js"></script>
   </body>
 </html>

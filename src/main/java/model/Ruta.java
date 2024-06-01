@@ -152,7 +152,7 @@ public class Ruta {
 		
 		/* Método sin Singelton
 		DaoRuta dao = new DaoRuta();
-		dao.publicarRuta(this); // publicarRuta es de DaoRuta.
+		dao.publicarRuta(this);
 		*/
 		
 	}
