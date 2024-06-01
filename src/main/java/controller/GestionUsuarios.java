@@ -5,10 +5,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Usuario;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import dao.DaoRuta;
@@ -16,9 +20,11 @@ import dao.DaoUsuario;
 
 /**
  * Servlet implementation class GestionUsuarios
+ * Instanciación sesion.
  */
 public class GestionUsuarios extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	HttpSession sesion;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -29,69 +35,84 @@ public class GestionUsuarios extends HttpServlet {
     }
 
 	/**
-	 * Gestión de opciones con if else.
-	 * Uso de patrón Singelton.
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Uso de patrón Singelton. Potección de toda la sesión. Gestión de opciones con
+	 * if else.
+	 * 
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		PrintWriter out = response.getWriter();
-		
-		int opcion = Integer.parseInt(request.getParameter("op")); //recuperar la opción
-		
-		if(opcion == 2) { //opción editar
-			
-			int iduser = Integer.parseInt(request.getParameter("iduser"));
-			try {
-				Usuario u = new Usuario();
-				u.obtenerPorId(iduser);
-				out.print(u.dameJson());
-				System.out.println(u.dameJson());
-				//comprobaciones
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+		sesion = request.getSession();
+
+		// int idSesion = Integer.parseInt((String)sesion.getAttribute("id"));
+		int idSesion = (int) sesion.getAttribute("iduser");
+
+		if (idSesion != 0) { // registrado si se cumple
+
+			PrintWriter out = response.getWriter();
+
+			int opcion = Integer.parseInt(request.getParameter("op")); // recuperar la opción
+
+			if (opcion == 2) { // opción editar
+
+				int iduser = Integer.parseInt(request.getParameter("iduser"));
+				try {
+					Usuario u = new Usuario();
+					u.obtenerPorId(iduser);
+					out.print(u.dameJson());
+					System.out.println(u.dameJson());
+					// comprobaciones
+
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			} else if (opcion == 1) { // opción listar
+
+				try {
+					DaoUsuario u = new DaoUsuario();
+					out.print(u.listarJson());
+					response.sendRedirect("listarUsuarios.html");
+
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			} else if (opcion == 3) { // opción borrar
+
+				int iduser = Integer.parseInt(request.getParameter("iduser"));
+				try {
+					DaoUsuario u = new DaoUsuario();
+					u.borrarUsuario(iduser);
+					out.print(u.listarJson());
+
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			} else if (opcion == 4) { // opción listar por tipo
+
+				int tipoUsuario = Integer.parseInt(request.getParameter("tipoUsuario"));
+				try {
+					// DaoUsuario.getInstance().listarJson(tipoUsuario); //Singelton mal hecho
+					// out.print(tipoUsuario); //No me lista al seleccionar. Intentar luego.
+					DaoUsuario u = new DaoUsuario();
+					out.print(u.listarJson(tipoUsuario));
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
-			
-		}else if(opcion == 1) { //opción listar
-			
-			try {
-				DaoUsuario u = new DaoUsuario();
-				out.print(u.listarJson());
-				// response.sendRedirect("listarUsuarios.html");	
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-			
-		}else if(opcion == 3) {	//opción borrar
-			
-			int iduser = Integer.parseInt(request.getParameter("iduser"));
-			try {
-				DaoUsuario u = new DaoUsuario();
-				u.borrarUsuario(iduser);
-				out.print(u.listarJson());
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}else if(opcion == 4) {
-		
-			int tipoUsuario = Integer.parseInt(request.getParameter("tipoUsuario"));	
-			try {
-				//DaoUsuario.getInstance().listarJson(tipoUsuario); //Singelton mal hecho
-				//out.print(tipoUsuario); //No me lista al seleccionar. Intentar luego.
-				DaoUsuario u = new DaoUsuario();
-				out.print(u.listarJson(tipoUsuario));
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+		} else {
+			System.out.println("Acceso denegado");
+			response.sendRedirect("login.html");
 		}
 
 	}
@@ -113,6 +134,7 @@ public class GestionUsuarios extends HttpServlet {
 		String email = request.getParameter("email");
 		int permiso = Integer.parseInt(request.getParameter("permiso"));
 		String iduser = request.getParameter("iduser");
+		//String pass = getMD5(request.getParameter("pass"));
 				
 		Usuario u = new Usuario(nombre, username, email, permiso);
 		System.out.println(u.toString());
@@ -138,6 +160,21 @@ public class GestionUsuarios extends HttpServlet {
 		
 	}
 
-	
+	public static String getMD5(String input) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] messageDigest = md.digest(input.getBytes());
+			BigInteger number = new BigInteger(1, messageDigest);
+			String hashtext = number.toString(16);
+			while (hashtext.length() < 32) {
+				hashtext = "0" + hashtext;
+			}
+			return hashtext;
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+
 	
 }

@@ -35,22 +35,18 @@
         <hr />
       </div>
 
-      <form action="" method="">
+      <form name="login" action="Login" method="post">
         <div class="section-inputs">
 
           <label for="username">
             <span>Username</span>
-            <input id="username" name="username" />
+            <input id="username" name="username" required />
           </label>
-          <label for="Password">
+          <label for="password">
             <span>Password</span>
-            <input id="Password" type="password" name="Password" placeholder="6+ caracteres" />
+            <input id="pass" type="password" name="pass" placeholder="6+ caracteres" required />
           </label>
 
-          <label for="checkbox" class="checkbox-label">
-            <input type="checkbox" id="checkbox" />
-            <span>Acepto las condiciones y el aviso legal</span>
-          </label>
           <button type="submit" class="submit-btn">Inciar sesión</button>
 
         </div>

@@ -43,7 +43,8 @@
 			<input type="hidden" id="iduser" name="iduser">
         	<label><span>Nombre</span><input id="nombre" type="text" name="nombre" /></label>
         	<label><span>Username</span><input id="username" type="text" name="username" /></label>
-       		<label><span>Email</span><input id="email" type="text" name="email" /></label>
+       		<label><span>Email</span><input id="email" type="text" name="email" placeholder="ejemplo@mototravel.com" /></label>
+       		<label><span>Contraseña</span><input id="pass" type="password" name="pass" placeholder="6+ caracteres" /></label>
         	<label><select name="permiso">
             	<option value="0">...</option>
             	<option value="1">Usuario registrado</option>
@@ -54,7 +55,7 @@
             <input type="checkbox" id="checkbox" /><span>Acepto las condiciones y el aviso legal</span>
           </label>
 
-          <label><input type="button" id="btn" value="Enviar"></label>
+          <label id="boton"><input type="button" id="btn" value="Enviar"></label>
         </div>
 
       </form>

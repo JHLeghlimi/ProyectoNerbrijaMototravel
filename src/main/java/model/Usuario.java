@@ -20,6 +20,7 @@ public class Usuario {
 	private String username;
 	private String email;
 	private int permiso;
+	private String pass;
 	
 	/**
 	 * Constructor vacío.
@@ -60,8 +61,26 @@ public class Usuario {
 		this.email = email;
 		this.permiso = permiso;
 	}
-
 	
+	public Usuario(int iduser, String nombre, String username, String email, int permiso, String pass) {
+		super();
+		this.iduser = iduser;
+		this.nombre = nombre;
+		this.username = username;
+		this.email = email;
+		this.permiso = permiso;
+		this.pass = pass;
+	}
+	
+	public Usuario(String nombre, String username, String email, int permiso, String pass) {
+		super();
+		this.nombre = nombre;
+		this.username = username;
+		this.email = email;
+		this.permiso = permiso;
+		this.pass = pass;
+	}
+
 	public int getIduser() {
 		return iduser;
 	}
@@ -100,6 +119,14 @@ public class Usuario {
 
 	public void setPermiso(int permiso) {
 		this.permiso = permiso;
+	}
+	
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
 	}
 
 	/**
@@ -156,6 +183,31 @@ public class Usuario {
 		this.setEmail(aux.getEmail());
 		this.setPermiso(aux.getPermiso());
 		
+	}
+	
+	/**
+	 * Método para el inicio de sesión. Método que devolverá un boolean.
+	 * Uso de patrón Singelton.
+	 * Si este metodo devuelve un objeto aux con sus datos significa que se ha logeado correctamente.
+	 * Si aux es diferente a null siginifica que aux contiene los datos de este usuario.
+	 * @param pass
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean logeo(String pass) throws SQLException {
+		
+		boolean ok = false;
+		
+		Usuario aux = DaoUsuario.getInstance().logeando(this, pass);
+		//DaoUsuario dao = new DaoUsuario();
+		//Usuario aux = dao.logeando(this, password);
+		
+		if(aux != null) {
+			ok = true;
+			
+			
+		}
+		return ok;
 	}
 	
 	/**

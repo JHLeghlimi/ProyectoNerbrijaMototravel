@@ -39,6 +39,35 @@ public class DaoUsuario {
 		return instance;
 	}
 	
+	/**
+	 * Método que pregunta por el nombre de usuario y la contraseña.
+	 * Dicho método, mandándole un usuario y un password devuelve ese usuario.
+	 * @param u
+	 * @param pass
+	 * @return
+	 * @throws SQLException
+	 */
+	public Usuario logeando(Usuario u, String pass) throws SQLException {
+		
+		String sql = "SELECT * FROM usuarios WHERE username=? AND pass=?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, u.getUsername()); 
+		ps.setString(2, pass);
+				
+		ResultSet rs = ps.executeQuery();
+				
+		rs.next();
+				
+		Usuario aux = new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5));
+				
+		return aux;
+	}
+	
+	/**
+	 * Método insertar con PreparedStatement y las pertinentes querys sql.
+	 * @param u
+	 * @throws SQLException
+	 */
 	public void insertarUsuario(Usuario u) throws SQLException {
 		
 		String sql = "INSERT INTO usuarios (nombre,username,email,permiso) VALUES (?,?,?,?)";
@@ -52,12 +81,10 @@ public class DaoUsuario {
 		int filas = ps.executeUpdate();
 		
 		ps.close();
-		
 	}
 	
 	/**
 	 * Método en el Dao que devolverá un solo registro por mediación de un id.
-	 * 
 	 * @param iduser
 	 * @return
 	 * @throws SQLException
