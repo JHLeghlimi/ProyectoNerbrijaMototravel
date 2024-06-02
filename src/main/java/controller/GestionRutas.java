@@ -116,7 +116,7 @@ public class GestionRutas extends HttpServlet {
 			e.printStackTrace();
 			System.out.println("Error en base de datos");
 		}	
-		response.sendRedirect("listadoRutas.html");
+		response.sendRedirect("listarRutas.html");
 	}
 
 }

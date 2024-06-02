@@ -198,13 +198,19 @@ public class Usuario {
 		
 		boolean ok = false;
 		
-		Usuario aux = DaoUsuario.getInstance().logeando(this, pass);
-		//DaoUsuario dao = new DaoUsuario();
-		//Usuario aux = dao.logeando(this, password);
+		//Usuario aux = DaoUsuario.getInstance().logeando(this, pass);
+		DaoUsuario dao = new DaoUsuario();
+		Usuario aux = dao.logeando(this, pass);
 		
 		if(aux != null) {
 			ok = true;
 			
+			this.setIduser(aux.getIduser());
+			this.setNombre(aux.getNombre());
+			this.setUsername(aux.getUsername());
+			this.setEmail(aux.getEmail());
+			this.setPermiso(aux.getPermiso());
+			this.setPass(aux.getPass());
 			
 		}
 		return ok;

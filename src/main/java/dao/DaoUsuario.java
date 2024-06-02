@@ -58,7 +58,7 @@ public class DaoUsuario {
 				
 		rs.next();
 				
-		Usuario aux = new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5));
+		Usuario aux = new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6));
 				
 		return aux;
 	}
@@ -70,13 +70,14 @@ public class DaoUsuario {
 	 */
 	public void insertarUsuario(Usuario u) throws SQLException {
 		
-		String sql = "INSERT INTO usuarios (nombre,username,email,permiso) VALUES (?,?,?,?)";
+		String sql = "INSERT INTO usuarios (nombre,username,email,permiso, pass) VALUES (?,?,?,?,?)";
 		PreparedStatement ps = con.prepareStatement(sql);
 		
 		ps.setString(1, u.getNombre());
 		ps.setString(2, u.getUsername());
 		ps.setString(3, u.getEmail());
 		ps.setInt(4, u.getPermiso());
+		ps.setString(5, u.getPass());
 				
 		int filas = ps.executeUpdate();
 		

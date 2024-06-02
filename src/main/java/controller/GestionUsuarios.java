@@ -47,7 +47,7 @@ public class GestionUsuarios extends HttpServlet {
 
 		sesion = request.getSession();
 
-		// int idSesion = Integer.parseInt((String)sesion.getAttribute("id"));
+		//int idSesion = Integer.parseInt((String)sesion.getAttribute("iduser"));
 		int idSesion = (int) sesion.getAttribute("iduser");
 
 		if (idSesion != 0) { // registrado si se cumple
@@ -57,7 +57,7 @@ public class GestionUsuarios extends HttpServlet {
 			int opcion = Integer.parseInt(request.getParameter("op")); // recuperar la opción
 
 			if (opcion == 2) { // opción editar
-
+				
 				int iduser = Integer.parseInt(request.getParameter("iduser"));
 				try {
 					Usuario u = new Usuario();
@@ -134,9 +134,9 @@ public class GestionUsuarios extends HttpServlet {
 		String email = request.getParameter("email");
 		int permiso = Integer.parseInt(request.getParameter("permiso"));
 		String iduser = request.getParameter("iduser");
-		//String pass = getMD5(request.getParameter("pass"));
+		String pass = getMD5(request.getParameter("pass"));
 				
-		Usuario u = new Usuario(nombre, username, email, permiso);
+		Usuario u = new Usuario(nombre, username, email, permiso, pass);
 		System.out.println(u.toString());
 		
 		try {	
