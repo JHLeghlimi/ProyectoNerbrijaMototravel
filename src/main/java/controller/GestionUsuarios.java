@@ -48,9 +48,9 @@ public class GestionUsuarios extends HttpServlet {
 		sesion = request.getSession();
 
 		//int idSesion = Integer.parseInt((String)sesion.getAttribute("iduser"));
-		int idSesion = (int) sesion.getAttribute("iduser");
+		//int idSesion = (int) sesion.getAttribute("iduser");
 
-		if (idSesion != 0) { // registrado si se cumple
+		//if (idSesion != 0) { // registrado si se cumple
 
 			PrintWriter out = response.getWriter();
 
@@ -64,6 +64,7 @@ public class GestionUsuarios extends HttpServlet {
 					u.obtenerPorId(iduser);
 					out.print(u.dameJson());
 					System.out.println(u.dameJson());
+					response.sendRedirect("listarUsuarios.html");
 					// comprobaciones
 
 				} catch (SQLException e) {
@@ -110,10 +111,10 @@ public class GestionUsuarios extends HttpServlet {
 				}
 
 			}
-		} else {
+		/*} else {
 			System.out.println("Acceso denegado");
 			response.sendRedirect("login.html");
-		}
+		}*/
 
 	}
 

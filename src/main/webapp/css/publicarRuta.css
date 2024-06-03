@@ -58,16 +58,29 @@ label span {
   font-weight: 700;
 }
 
-label input {
-  width: 80%;
-  background-color: #e0e0f8;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 10px;
-  outline: none;
-  font-size: 10pt;
-  transition: background-color 0.2s, border 0.2s, box-shadow 0.2s;
-}
+label textarea  {
+	width: 100%;
+	background-color: #e0e0f8;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 10px;
+	outline: none;
+	font-size: 10pt;
+	transition: background-color 0.2s, border 0.2s, box-shadow 0.2s;
+	text-align: center;
+	}
+
+label input  {
+	width: 100%;
+	background-color: #e0e0f8;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 10px;
+	outline: none;
+	font-size: 10pt;
+	transition: background-color 0.2s, border 0.2s, box-shadow 0.2s;
+	text-align: center;
+	}
 
 label input:hover {
   background-color: white;
@@ -79,6 +92,15 @@ label input:focus {
   background-color: white;
   border: solid 1px whitesmoke;
   box-shadow: 0 0 4px rgb(217, 152, 163);
+}
+
+.btn-publicar{
+	padding: 20px 10px;
+}
+
+.btn-publicar input{
+	cursor: pointer;
+	width: 150px;
 }
 
 a {

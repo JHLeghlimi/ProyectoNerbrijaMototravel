@@ -2,6 +2,8 @@ package model;
 
 import java.sql.SQLException;
 
+import com.google.gson.Gson;
+
 import dao.DaoRuta;
 
 /**
@@ -61,21 +63,6 @@ public class Ruta {
 		this.descripcion = descripcion;
 		this.fecha = fecha;
 		this.foto = foto;
-	}
-
-	/**
-	 * Constructor sin 'id' y sin 'foto'.
-	 * @param titulo
-	 * @param estilo
-	 * @param descripcion
-	 * @param fecha
-	 */
-	public Ruta(String titulo, String estilo, String descripcion, String fecha) {
-		super();
-		this.titulo = titulo;
-		this.estilo = estilo;
-		this.descripcion = descripcion;
-		this.fecha = fecha;
 	}
 
 	public int getIdruta() {
@@ -156,5 +143,43 @@ public class Ruta {
 		*/
 		
 	}
+	
+	public void editarRuta() throws SQLException {
+		
+		DaoRuta.getInstance().editarRuta(this);
+		
+	}
+	
+	public void borrarRuta(int idruta) throws SQLException {
+		
+		DaoRuta.getInstance().borrarRuta(idruta);
+		
+	}
+	
+	public void obtenerPorId(int idruta) throws SQLException {
+		
+		Ruta aux = DaoRuta.getInstance().obtenerPorId(idruta); //Singelton
+		//DaoRuta dao = new DaoRuta();
+		//Ruta aux = dao.obtenerPorId(idruta);
+		
+		this.setIdruta(aux.getIdruta());
+		this.setTitulo(aux.getTitulo());
+		this.setEstilo(aux.getEstilo());
+		this.setDescripcion(aux.getDescripcion());
+		this.setFecha(aux.getFecha());
+		this.setFoto(aux.getFoto());
+		
+	}
+	
+	public String dameJson() {
+		
+		String json = "";
+		Gson gson = new Gson();
+		json = gson.toJson(this);
+				
+		return json;
+	}
 
 }
+
+

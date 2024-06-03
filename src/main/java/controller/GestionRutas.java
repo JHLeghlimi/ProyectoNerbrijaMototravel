@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import model.Ruta;
+import model.Usuario;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 
 import dao.DaoRuta;
+import dao.DaoUsuario;
 
 /**
  * Servlet implementation class GestionRutas
@@ -52,18 +54,61 @@ public class GestionRutas extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		
-		try {
-			String respuestaJSON;
-			respuestaJSON = DaoRuta.getInstance().listarJson();
-			System.out.println(respuestaJSON);
-			
-			PrintWriter out = response.getWriter();
-			out.print(respuestaJSON);
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} //Singelton	
+				PrintWriter out = response.getWriter();
+				int opcion = Integer.parseInt(request.getParameter("op"));
+
+		        switch (opcion) {
+		        
+		            case 1: // listar rutas
+		            	
+		        		try {
+		        			String respuestaJSON;
+		        			respuestaJSON = DaoRuta.getInstance().listarJson();
+		        			out.print(respuestaJSON);
+		        			System.out.println("Opcion 1: listar funciona!");
+		        			
+		        		} catch (SQLException e) {
+		        			// TODO Auto-generated catch block
+		        			e.printStackTrace();
+		        		} //Singelton	
+		                break;
+		                
+		            case 2: // editar ruta
+		            	
+						int idruta = Integer.parseInt(request.getParameter("idruta"));
+						try {
+							Ruta ruta = DaoRuta.getInstance().obtenerPorId(idruta);
+			                String rutaJson = ruta.dameJson();
+			                out.print(rutaJson);
+			                System.out.println("Opción 2: editar funciona!");
+							
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		                
+		                break;
+		                
+		            case 3:
+		            	int idruta1 = Integer.parseInt(request.getParameter("idruta"));
+						try {
+							DaoRuta r = new DaoRuta();
+							r.borrarRuta(idruta1);
+							out.print(r.listarJson());
+							System.out.println("Opcion 3: borrar funciona!");
+
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+		                break;
+
+		            default:
+		                System.out.println("Algo ha fallado");
+		                break;
+		        }
+		 
 		
 	}
 
@@ -81,6 +126,7 @@ public class GestionRutas extends HttpServlet {
 		String estilo = request.getParameter("estilo");
 		String descripcion = request.getParameter("descripcion");
 		String fecha = request.getParameter("fecha");
+		int idruta = Integer.parseInt(request.getParameter("idruta"));
 		
 		//Subir una foto:
 		Part part = request.getPart("foto"); //datos binarios de la foto
@@ -110,13 +156,21 @@ public class GestionRutas extends HttpServlet {
 		System.out.println(r1.toString());
 		
 		try {
-			r1.publicarRuta();
+			
+			if (idruta == 0 ) {
+				DaoRuta.getInstance().publicarRuta(r1);
+			}else {
+				r1.setIdruta(idruta);
+				r1.editarRuta();
+			}
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			System.out.println("Error en base de datos");
 		}	
 		response.sendRedirect("listarRutas.html");
+	
 	}
 
 }

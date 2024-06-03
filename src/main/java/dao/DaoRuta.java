@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 
 import model.Ruta;
+import model.Usuario;
 
 /**
  * Cuando se instance este objeto DaoRuta, el constructor de esta clase se conectará a BD.
@@ -52,6 +53,19 @@ public class DaoRuta {
 		
 	}
 	
+	public Ruta obtenerPorId(int idruta) throws SQLException {
+		
+		String sql = "SELECT * FROM rutas WHERE idruta=?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, idruta);
+		
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		Ruta r = new Ruta(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+		
+		return r;
+	}
+	
 	/**
 	 * Método insertar ruta (publicarRuta) en la BD, con la secuencia sql formulada.
 	 * No hace falta conectarse, ya hay una conexión activa 'con', con la query que deseamos utilizar.
@@ -75,10 +89,38 @@ public class DaoRuta {
 		ps.setString(4, r.getFecha());
 		ps.setString(5, r.getFoto());
 		
-		int filas = ps.executeUpdate();
+		ps.executeUpdate();
 		
 		ps.close();
 		
+	}
+	
+	public void editarRuta(Ruta r) throws SQLException {
+		
+		String sql = "UPDATE rutas SET titulo=?, estilo=?, descripcion=?, fecha=?, foto=? WHERE idruta=?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		
+		ps.setString(1, r.getTitulo());
+		ps.setString(2, r.getEstilo());
+		ps.setString(3, r.getDescripcion());
+		ps.setString(4, r.getFecha());
+		ps.setString(5, r.getFoto());
+		ps.setInt(6, r.getIdruta());
+		
+		ps.executeUpdate();
+		
+		ps.close();
+	}
+	
+	public void borrarRuta(int idruta) throws SQLException {
+		
+		String sql = "DELETE FROM rutas WHERE idruta=?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, idruta);
+		
+		int filas = ps.executeUpdate();
+		
+		ps.close();
 	}
 	
 	/**

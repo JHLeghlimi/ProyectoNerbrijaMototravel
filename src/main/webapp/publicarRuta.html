@@ -31,30 +31,23 @@
       <!--Especificar si viajará por get o por post-->
       <!--enctype="multipart/form-data" en caso de que se requiera enviar archivos-->
 
-      <form name="publicarRuta" action="GestionRutas" method="post" enctype="multipart/form-data">
+      <form id="publicarRuta" action="GestionRutas" method="post" enctype="multipart/form-data">
 
         <div class="section-inputs">
+        
+        	<input type="hidden" id="idruta" name="idruta">
             <label><span>Título</span><input id="titulo" name="titulo" /></label>
             <label><span>Estilo</span><input id="estilo" name="estilo" /></label>
-            <label><span>Descripción</span><textarea name="descripcion"></textarea></label>
+            <label><span>Descripción</span><textarea id="descripcion" name="descripcion"></textarea></label>
             <label><span>Fecha de la ruta</span><input id="fecha" type="date" name="fecha" />
-            <label><span>Sube una foto del cartel</span><input type="file" name="foto" /></label>
-            <label><input type="submit" value="Publicar"></label>
+            <label><span>Sube una foto del cartel</span><input id="foto" type="file" name="foto" /></label>
+            <div class="btn-publicar"><input id="btn-guardar" type="submit" value="Guardar"></div>
             
-            <!--
-            <ul>
-            <li><label>Título</label><input id="titulo" name="titulo" /></li>
-            <li><label>Estilo</label><input id="estilo" name="estilo" /></li>
-            <li><label>Descripción</label><textarea name="descripcion"></textarea></li>
-            <li><label>Fecha</label><input id="fecha" type="date" name="fecha" /></li>
-            <li><label>Cartel</label><input type="file" name="foto" /></li>
-            <li><input type="submit" value="Publicar"></li>
-            </ul>
-            -->        
         </div>
 
       </form>
-      <a href="index.html"><h3>Volver a página de inicio</h3></a>
+      <a href="index.html">Volver a página de inicio</a>
     </div>
-  </body>
+    
+	<script src="js/editarRuta.js"></script>
 </html>
