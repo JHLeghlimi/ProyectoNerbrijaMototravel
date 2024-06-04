@@ -145,3 +145,8 @@ label input:focus {
   background-color: rgb(213, 69, 69);
   cursor: pointer;
 }
+
+.noRegistrado {
+	font-size: 0.7em;
+	text-align: center;
+}

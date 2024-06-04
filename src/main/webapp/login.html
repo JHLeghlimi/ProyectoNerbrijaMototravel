@@ -34,24 +34,21 @@
         <span>Iniciar sesión con tu usuario</span>
         <hr />
       </div>
+		<div class="section-inputs">
+			<form id="login" name="login" action="Login" method="post">
 
-      <form name="login" action="Login" method="post">
-        <div class="section-inputs">
+				<label for="username"> <span>Username</span><input id="username" name="username" required />
+				</label><label for="password"><span>Password</span><input id="pass" type="password" name="pass" placeholder="6+ caracteres"required />
+				</label>
+				<button type="submit" class="submit-btn">Inciar sesión</button>
+				
+				<div class="noRegistrado">
+					<h3>¿No estás registrado?</h3>
+					<a href="signin.html">Crear cuenta</a>
+				</div>
+			</form>
+		</div>
+	</div>
 
-          <label for="username">
-            <span>Username</span>
-            <input id="username" name="username" required />
-          </label>
-          <label for="password">
-            <span>Password</span>
-            <input id="pass" type="password" name="pass" placeholder="6+ caracteres" required />
-          </label>
-
-          <button type="submit" class="submit-btn">Inciar sesión</button>
-
-        </div>
-      </form>
-    </div>
-
-  </body>
+</body>
 </html>

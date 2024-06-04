@@ -1,7 +1,6 @@
 package controller;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,6 +12,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+
+import dao.DaoUsuario;
 
 /**
  * Servlet implementation class Login
@@ -46,22 +47,30 @@ public class Login extends HttpServlet {
 		//String pass = request.getParameter("pass");
 		String pass = getMD5(request.getParameter("pass")); //cifrado
 		
+		if (username == null || username.isEmpty() || pass == null || pass.isEmpty()) {
+            response.sendRedirect("login.html");
+            return;
+        }
+		
 		Usuario u = new Usuario();
 		u.setUsername(username);
 		
 		//protección
 		
 		try {
-			if(u.logeo(pass)) {
-				sesion = request.getSession(); //inicializar sesion
+			
+			if(u.logeo(pass)) { // si el usuario está, lo guarda en sesión.
 				
+				sesion = request.getSession(); //inicializar sesion
 				sesion.setAttribute("iduser", u.getIduser());
 				sesion.setAttribute("permiso", u.getPermiso()); //identificación
 				
 				response.sendRedirect("index.html");
+				System.out.println("Acceso permitido");
 				
-			}else {
+			}else { // no accede aquí, solucionar
 				response.sendRedirect("login.html");
+				System.out.println("Acceso denegado");
 			}
 		} catch (SQLException | IOException e) {
 			// TODO Auto-generated catch block

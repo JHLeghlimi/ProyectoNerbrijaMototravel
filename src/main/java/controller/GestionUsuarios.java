@@ -1,7 +1,6 @@
 package controller;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +14,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
-import dao.DaoRuta;
 import dao.DaoUsuario;
 
 /**
@@ -48,9 +46,10 @@ public class GestionUsuarios extends HttpServlet {
 		sesion = request.getSession();
 
 		//int idSesion = Integer.parseInt((String)sesion.getAttribute("iduser"));
-		//int idSesion = (int) sesion.getAttribute("iduser");
+		int idSesion = (int) sesion.getAttribute("iduser");
+		int permisoSesion = (int) sesion.getAttribute("permiso");
 
-		//if (idSesion != 0) { // registrado si se cumple
+		if (idSesion != 0 && permisoSesion > 1) { // registrado si se cumple
 
 			PrintWriter out = response.getWriter();
 
@@ -111,10 +110,10 @@ public class GestionUsuarios extends HttpServlet {
 				}
 
 			}
-		/*} else {
+		} else {
 			System.out.println("Acceso denegado");
 			response.sendRedirect("login.html");
-		}*/
+		}
 
 	}
 

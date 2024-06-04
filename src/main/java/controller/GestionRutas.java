@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import model.Ruta;
 import model.Usuario;
@@ -19,7 +20,6 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 
 import dao.DaoRuta;
-import dao.DaoUsuario;
 
 /**
  * Servlet implementation class GestionRutas
@@ -27,6 +27,7 @@ import dao.DaoUsuario;
 @MultipartConfig
 public class GestionRutas extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	HttpSession sesion;
 	
 	// Decidir la ruta de almacenamiento de las fotos subidas.
 	private String pathFiles = "C:\\Users\\Usuario\\eclipse-workspace\\ProyectoMototravel\\src\\main\\webapp\\uploadedPhotos";
@@ -38,6 +39,28 @@ public class GestionRutas extends HttpServlet {
     public GestionRutas() {
         // TODO Auto-generated constructor stub
     }
+    
+    /**
+     * Métodos comprobacionLogin y comprobacionPermiso: Estos métodos verifican si el usuario está logueado y si tiene los permisos necesarios para realizar la acción solicitada.
+     * comprobacionLogin: Verifica si la sesión es válida y si hay un usuario registrado en la sesión.
+     * @param request
+     * @return
+     */
+    private boolean comprobacionLogin(HttpServletRequest request) {
+        sesion = request.getSession(false);
+        return sesion != null && sesion.getAttribute("iduser") != null;
+    }
+
+    /**
+     * comprobacionPermiso: Verifica si el usuario tiene los permisos requeridos para realizar la acción.
+     * @param request
+     * @param permiso
+     * @return
+     */
+    private boolean comprobacionPermiso(HttpServletRequest request, int permiso) {
+        Usuario u = (Usuario) sesion.getAttribute("permiso");
+        return u != null && u.getPermiso() >= permiso;
+    }
 
 	/**
 	 * Recordar que request es la entrada y response la salida.
@@ -48,68 +71,93 @@ public class GestionRutas extends HttpServlet {
 	 * Se usará Singelton siempre que se pueda.
 	 * De esta manera el cliente recibe los datos por web, los cuales recibirá JavaScript y porcesará.
 	 * 
+	 * Verificación de sesión y permisos en doGet y doPost antes de ejecutar cualquier acción, 
+	 * se verifica si el usuario está logueado y si tiene los permisos necesarios.
+	 * Si el usuario no está logueado, se redirige a la página de login.
+	 * Si el usuario no tiene los permisos necesarios, se redirige a una página que queramos.
+	 * 
+	 * El bloque if !comprobacionPermiso o !comprobacionLogin significa "si no se cumple la condición de que el usuario tiene los permisos necesarios"
+	 * o no está logeado. Es decir, si se cumple que no está logeado,entra en el fi y lo expulsa.
+	 * 
+	 * Se pone inverso (exclamación) para evitar meter todo el código dentro del if siendo menos claro. Por limpieza de código.
+	 * 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		
-				PrintWriter out = response.getWriter();
-				int opcion = Integer.parseInt(request.getParameter("op"));
 
-		        switch (opcion) {
-		        
-		            case 1: // listar rutas
-		            	
-		        		try {
-		        			String respuestaJSON;
-		        			respuestaJSON = DaoRuta.getInstance().listarJson();
-		        			out.print(respuestaJSON);
-		        			System.out.println("Opcion 1: listar funciona!");
-		        			
-		        		} catch (SQLException e) {
-		        			// TODO Auto-generated catch block
-		        			e.printStackTrace();
-		        		} //Singelton	
-		                break;
-		                
-		            case 2: // editar ruta
-		            	
-						int idruta = Integer.parseInt(request.getParameter("idruta"));
-						try {
-							Ruta ruta = DaoRuta.getInstance().obtenerPorId(idruta);
-			                String rutaJson = ruta.dameJson();
-			                out.print(rutaJson);
-			                System.out.println("Opción 2: editar funciona!");
-							
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-		                
-		                break;
-		                
-		            case 3:
-		            	int idruta1 = Integer.parseInt(request.getParameter("idruta"));
-						try {
-							DaoRuta r = new DaoRuta();
-							r.borrarRuta(idruta1);
-							out.print(r.listarJson());
-							System.out.println("Opcion 3: borrar funciona!");
+		if (!comprobacionLogin(request)) {
+			response.sendRedirect("login.html");
+			return;
+		}
 
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+		PrintWriter out = response.getWriter();
+		int opcion = Integer.parseInt(request.getParameter("op"));
 
-		                break;
+		switch (opcion) {
 
-		            default:
-		                System.out.println("Algo ha fallado");
-		                break;
-		        }
-		 
-		
+		case 1: // listar rutas
+			if (comprobacionPermiso(request, 1)) { // acceso a permiso 1 o mayor
+				try {
+					String respuestaJSON;
+					respuestaJSON = DaoRuta.getInstance().listarJson();
+					out.print(respuestaJSON);
+					System.out.println("Opcion 1: listar funciona!");
+
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} // Singelton
+			} else {
+				response.sendRedirect("index.html");
+			}
+			break;
+
+		case 2: // editar ruta
+
+			if (comprobacionPermiso(request, 9)) { // acceso a administrador
+				int idruta = Integer.parseInt(request.getParameter("idruta"));
+				try {
+					Ruta ruta = DaoRuta.getInstance().obtenerPorId(idruta);
+					String rutaJson = ruta.dameJson();
+					out.print(rutaJson);
+					System.out.println("Opción 2: editar funciona!");
+
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				response.sendRedirect("listarRutas.html");
+			}
+			break;
+
+		case 3: // borrar ruta
+
+			if (comprobacionPermiso(request, 9)) { // acceso a administrador
+				int idruta1 = Integer.parseInt(request.getParameter("idruta"));
+				try {
+					DaoRuta r = new DaoRuta();
+					r.borrarRuta(idruta1);
+					out.print(r.listarJson());
+					System.out.println("Opcion 3: borrar funciona!");
+
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				response.sendRedirect("listarRutas.html");
+
+			}
+			break;
+
+		default:
+			System.out.println("Algo ha fallado");
+			break;
+		}
+
 	}
 
 	/**
@@ -117,10 +165,21 @@ public class GestionRutas extends HttpServlet {
 	 * Para subir una foto el buffer (camino o ruta) es el siguiente: ruta - datos - nombreArchivo
 	 * En una foto se obtienen los datos del archivo del formulario, no la foto en sí.
 	 * 
+	 * ***Explicación del control de sesiones y permisos en el doGet.
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		if (!comprobacionLogin(request)) {
+			response.sendRedirect("login.html");
+			return;
+		}
+
+		if (!comprobacionPermiso(request, 9)) { // solo los administradores de momento pueden publicar rutas
+			response.sendRedirect("index.html");
+			return;
+		}
 		
 		String titulo = request.getParameter("titulo");
 		String estilo = request.getParameter("estilo");
@@ -156,12 +215,14 @@ public class GestionRutas extends HttpServlet {
 		System.out.println(r1.toString());
 		
 		try {
-			
+			System.out.println("llega");
 			if (idruta == 0 ) {
 				DaoRuta.getInstance().publicarRuta(r1);
+				System.out.println("publica");
 			}else {
 				r1.setIdruta(idruta);
 				r1.editarRuta();
+				System.out.println("edita");
 			}
 			
 		} catch (Exception e) {

@@ -82,9 +82,6 @@ header button{
     font-size: 0.8em;
 }
 
-header .btn-logout{
-    padding-bottom: 15px;
-}
 
 #hero{
     display: flex;

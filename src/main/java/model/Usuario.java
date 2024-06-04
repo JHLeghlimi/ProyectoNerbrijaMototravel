@@ -190,6 +190,7 @@ public class Usuario {
 	 * Uso de patrón Singelton.
 	 * Si este metodo devuelve un objeto aux con sus datos significa que se ha logeado correctamente.
 	 * Si aux es diferente a null siginifica que aux contiene los datos de este usuario.
+	 * El método logeando del DaoUsuario es el que consulta con la BD.
 	 * @param pass
 	 * @return
 	 * @throws SQLException
