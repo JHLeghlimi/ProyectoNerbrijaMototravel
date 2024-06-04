@@ -42,8 +42,11 @@ function validarFormulario(){
     }
 }
 
-const btn = document.getElementById('btn');
-btn.addEventListener('click', validarFormulario);
+document.addEventListener("DOMContentLoaded", function() {
+    const btn = document.getElementById('btn');
+    btn.addEventListener('click', validarFormulario);
+});
+
 
 function pintarFormulario(datos) {
 	
