@@ -17,8 +17,10 @@ function getParameterByName(name) {
 		return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-const btn = document.getElementById('btn-guardar');
-btn.addEventListener('click', validarFormulario);
+document.addEventListener("DOMContentLoaded", function() {
+    const btn = document.getElementById('btn-guardar');
+    btn.addEventListener('click', validarFormulario);
+});
 
 function validarFormulario() {
 
